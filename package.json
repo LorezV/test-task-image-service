@@ -1,0 +1,23 @@
+{
+  "name": "image-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "deploy": "nodemon app.js",
+    "start": "nodemon app.js --clean-temp"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "fs-extra": "^10.1.0",
+    "nodemon": "^2.0.18"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "connect-busboy": "^1.0.0",
+    "express": "^4.18.1",
+    "sharp": "^0.30.7"
+  }
+}
