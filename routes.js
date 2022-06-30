@@ -9,7 +9,7 @@ router.post('/image-service/webp/', (request, response, next) => {
     request.pipe(request.busboy);
     request.busboy.on('file', (field, file, {filename}) => {
 
-        if (field != 'file') return;
+        if (field !== 'file') return;
 
         fs.mkdtemp(path.join(getTempFolder(), 'result-'), (err, folder) => {
             if (err) {
@@ -21,7 +21,8 @@ router.post('/image-service/webp/', (request, response, next) => {
             file.pipe(fStream);
             fStream.on('close', async () => {
                 const webp = await sharp(inputPath).webp();
-                filename = await filename.replace('.png', '.webp');
+                filename = filename.split('.');
+                filename = filename[filename.length - 2] + '.webp';
                 const outPath = path.join(folder, filename);
                 await webp.toFile(outPath);
 
@@ -33,10 +34,13 @@ router.post('/image-service/webp/', (request, response, next) => {
                     return response.sendFile(outPath);
                 }
 
-                let responseFolder = folder.split('/');
+                let responseFolder = folder.split('\\');
                 responseFolder = responseFolder[responseFolder.length - 1];
-                response.setHeader('Content-Type', 'application/json');
-                return response.send(JSON.stringify({folder: responseFolder, filename}));
+                await response.setHeader('Content-Type', 'application/json');
+                return response.send(JSON.stringify({
+                    folder: responseFolder,
+                    filename
+                }));
             });
         });
     });
@@ -50,7 +54,8 @@ router.get('/image-service/webp/:folderName/:fileName', (request, response, next
         return next(createError(500));
     }
 
-    let filePath = path.join(getTempFolder(), 'temp', folder, fileName);
+    let filePath = path.join(getTempFolder(), folder, fileName);
+    console.log(filePath)
     fs.access(filePath, (err) => {
         if (err) return next(createError(404));
         return response.sendFile(filePath);
