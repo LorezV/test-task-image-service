@@ -4,8 +4,7 @@ const createError = require('http-errors');
 
 const express = require('express');
 const routes = require('./routes');
-const utils = require('./utls');
-const {cleanTempFolder} = require("./utls");
+const {cleanTempFolder} = require('./utils');
 
 const app = express();
 app.use(busboy());

@@ -1,9 +1,9 @@
-const fs = require("fs");
+const fs = require('fs');
 const path = require('path')
-const sharp = require("sharp");
+const sharp = require('sharp');
 const router = require('express').Router();
 const createError = require('http-errors');
-const {getTempFolder} = require('./utls');
+const {getTempFolder} = require('./utils');
 
 router.post('/image-service/webp/', (request, response, next) => {
     request.pipe(request.busboy);
