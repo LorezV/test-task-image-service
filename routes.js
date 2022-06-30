@@ -55,7 +55,6 @@ router.get('/image-service/webp/:folderName/:fileName', (request, response, next
     }
 
     let filePath = path.join(getTempFolder(), folder, fileName);
-    console.log(filePath)
     fs.access(filePath, (err) => {
         if (err) return next(createError(404));
         return response.sendFile(filePath);
